@@ -58,6 +58,49 @@ bot.on('guildMemberAdd', function (member)
     }
   }
 });
+bot.on('message', message => {
+  if (message.content.startsWith(prefix + 'play')) {
+    if (message.member.voiceChannel) {
+      let args = message.content.split(' ')
+      const voiceChannel = message.member.voiceChannel
+      const connection = message.member.voiceChannel.join();
+        const ytdl = require('ytdl-core');
+    voiceChannel.join()
+      .then(connection => {
+      const stream = ytdl(args[1], { filter : 'audioonly' });
+      const dispatcher = connection.playStream(stream, streamOptions);
+      message.channel.send("J'ai lancer votre vidéo " + message.author + " !")
+  })
+  .catch(console.error);
+    } else {
+      message.reply('Vous devez être dans un channel vocal !');
+    }
+  }
+  if (message.content === prefix + 'leave') {
+    if (message.member.voiceChannel) {
+      const connection = message.member.voiceChannel.leave();
+      message.reply(" j'ai quitté le channel !")
+    }else {
+      message.reply('Vous devez être dans un channel vocal !');
+    }}
+    if (message.content.startsWith(prefix + 'volume')) {
+      let args = message.content.split(' ')
+      if (args[1].indexOf(abcd) !== -1) {
+        message.channel.send('Le volume est réglable de **1** à **100** !')
+      } else {
+        if (args[1] >= 1) {
+          if (args[1] <= 100) {
+          vol = args[1]
+        message.channel.send(`J'ai mis le volume sur **${vol}** !`)
+      } else {
+        message.channel.send('Le volume est trop **fort** ! (1 à 100)')
+      }
+    } else {
+      message.channel.send("Le volume n'est **pas asser fort** ! (1 à 100)")
+    } 
+      }
+    }
+})
 bot.on('guildMemberRemove', function (member)
 {
   if (member.guild.name !== '[FR] Gaming / Discussion') {
@@ -1281,49 +1324,6 @@ if (!toMute.roles.has(role.id)) return message.channel.send("Cette personne n'es
 message.channel.send(`${toMute} est désomais unmté !`)
   }
 });
-bot.on('message', message => {
-  if (message.content.startsWith(prefix + 'play')) {
-    if (message.member.voiceChannel) {
-      let args = message.content.split(' ')
-      const voiceChannel = message.member.voiceChannel
-      const connection = message.member.voiceChannel.join();
-        const ytdl = require('ytdl-core');
-    voiceChannel.join()
-      .then(connection => {
-      const stream = ytdl(args[1], { filter : 'audioonly' });
-      const dispatcher = connection.playStream(stream, streamOptions);
-      message.channel.send("J'ai lancer votre vidéo " + message.author + " !")
-  })
-  .catch(console.error);
-    } else {
-      message.reply('Vous devez être dans un channel vocal !');
-    }
-  }
-  if (message.content === prefix + 'leave') {
-    if (message.member.voiceChannel) {
-      const connection = message.member.voiceChannel.leave();
-      message.reply(" j'ai quitté le channel !")
-    }else {
-      message.reply('Vous devez être dans un channel vocal !');
-    }}
-    if (message.content.startsWith(prefix + 'volume')) {
-      let args = message.content.split(' ')
-      if (args[1].indexOf(abcd) !== -1) {
-        message.channel.send('Le volume est réglable de **1** à **100** !')
-      } else {
-        if (args[1] >= 1) {
-          if (args[1] <= 100) {
-          vol = args[1]
-        message.channel.send(`J'ai mis le volume sur **${vol}** !`)
-      } else {
-        message.channel.send('Le volume est trop **fort** ! (1 à 100)')
-      }
-    } else {
-      message.channel.send("Le volume n'est **pas asser fort** ! (1 à 100)")
-    } 
-      }
-    }
-})
 
 
 bot.login(process.env.TOKEN)
